@@ -1,4 +1,4 @@
 cpp-iniparser
 =============
 
-A small INI parser in C++
+A small C++ INI parser library
