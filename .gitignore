@@ -5,3 +5,6 @@ bin
 build
 Debug
 Release
+.pydevproject
+.lock*
+*.swp
