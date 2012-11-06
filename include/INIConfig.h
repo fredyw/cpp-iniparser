@@ -24,6 +24,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace cppiniparser {
 
@@ -38,12 +39,14 @@ public:
     bool HasSection(const std::string& sectionName);
 
     /**
-     * Checks if a option exists.
+     * Checks if an option exists.
      */
     bool HasOption(const std::string& sectionName, const std::string& optionName);
 
     /**
      * Gets an option.
+     *
+     * If the section name/option name does not exist, an InvalidOptionException will be thrown.
      */
     std::string GetOption(const std::string& sectionName, const std::string& optionName);
 
@@ -53,15 +56,16 @@ public:
     std::vector<std::string> Sections();
 
     /**
-     * Gets an option from a given section name.
+     * Gets list of options from a given section name.
+     *
+     * If the section name does not exist, an InvalidSectionException will be thrown.
      */
     std::vector<std::string> Options(const std::string& sectionName);
 
     /**
      * Sets an option.
      *
-     * If the section name does not exist, an InvalidSectionException will be thrown.
-     * If the option name does not exist, an InvalidOptionException will be thrown.
+     * If the section name/option name does not exist, an InvalidOptionException will be thrown.
      */
     void SetOption(const std::string& sectionName, const std::string& optionName,
         const std::string& optionValue);
@@ -76,8 +80,7 @@ public:
     /**
      * Removes an option.
      *
-     * If the section name does not exist, an InvalidSectionException will be thrown.
-     * If the option name does not exist, an InvalidOptionException will be thrown.
+     * If the section name/option name does not exist, an InvalidOptionException will be thrown.
      */
     void RemoveOption(const std::string& sectionName, const std::string& optionName);
 
@@ -98,6 +101,21 @@ public:
         const std::string& optionValue);
 
     virtual ~INIConfig() {}
+
+private:
+    // key --> section name
+    // value --> map (key --> option name, value --> option value)
+    std::map<std::string, std::map<std::string, std::string> > config;
+
+    /**
+     * This method throws InvalidSectionName if section name doesn't exist.
+     */
+    inline void ValidateSection(const std::string& sectionName);
+
+    /**
+     * This method throws InvalidOptionName if section name/option name doesn't exist.
+     */
+    inline void ValidateOption(const std::string& sectionName, const std::string& optionName);
 };
 
 }

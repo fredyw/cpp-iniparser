@@ -24,10 +24,12 @@
 
 #include <stdexcept>
 
+namespace cppiniparser {
+
 class DuplicateOptionException : public std::exception {
 public:
-    DuplicateOptionException(const char* msg) throw() : message(msg) { }
-    virtual ~DuplicateOptionException() throw();
+    DuplicateOptionException(const char* msg) throw() : message(msg) {}
+    virtual ~DuplicateOptionException() throw() {};
 
     /**
      * Returns a C-style character string describing the general cause
@@ -38,5 +40,7 @@ public:
 private:
     const char* message;
 };
+
+}
 
 #endif /* DUPLICATEOPTIONEXCEPTION_H_ */

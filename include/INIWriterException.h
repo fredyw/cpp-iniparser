@@ -24,10 +24,12 @@
 
 #include <stdexcept>
 
+namespace cppiniparser {
+
 class INIWriterException : public std::exception {
 public:
-    INIWriterException(const char* msg) throw() : message(msg) { }
-    virtual ~INIWriterException() throw();
+    INIWriterException(const char* msg) throw() : message(msg) {}
+    virtual ~INIWriterException() throw() {};
 
     /**
      * Returns a C-style character string describing the general cause
@@ -38,5 +40,7 @@ public:
 private:
     const char* message;
 };
+
+}
 
 #endif /* INIWRITEREXCEPTION_H_ */

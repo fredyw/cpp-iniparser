@@ -12,19 +12,23 @@ out = 'build'
 
 cxxflags = ['-g', '-Wall']
 
-source_files = ['src/INIConfig.cpp', 'src/INIParser.cpp']
+source_files = ['src/INIConfig.cpp',
+                'src/INIParser.cpp',
+                'src/Utilities.cpp']
 target_file = 'cppiniparser'
 include_dir = ['include']
 
-test_files = ['test/INIConfigTest.cpp', 'test/INIParserTest.cpp']
+test_files = ['test/INIConfigTest.cpp',
+              'test/INIParserTest.cpp',
+              'test/UtilitiesTest.cpp']
 test_libs = ['pthread', 'gtest_main']
 test_libs_dir = [os.path.join(os.getcwd(), out)]
 test_output = 'test_output'
 
 def options(ctx):
     ctx.load('compiler_cxx')
-    ctx.add_option('--shared', action='store_true', default=True, help='build shared library')
-    ctx.add_option('--static', action='store_true', help='build static library')
+    ctx.add_option('--shared', action='store_true', default=False, help='build shared library')
+    ctx.add_option('--static', action='store_true', default=False, help='build static library')
     ctx.add_option('--test', action='store_true', help='build and execute unit tests')
     ctx.add_option('--gtest_include', action='store', help='gtest include directory')
     ctx.add_option('--gtest_lib', action='store', help='gtest lib directory')

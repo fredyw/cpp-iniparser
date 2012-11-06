@@ -25,10 +25,12 @@
 
 #include <stdexcept>
 
+namespace cppiniparser {
+
 class InvalidOptionException : public std::exception {
 public:
-    InvalidOptionException(const char* msg) throw() : message(msg) { }
-    virtual ~InvalidOptionException() throw();
+    InvalidOptionException(const char* msg) throw() : message(msg) {}
+    virtual ~InvalidOptionException() throw() {};
 
     /**
      * Returns a C-style character string describing the general cause
@@ -39,5 +41,7 @@ public:
 private:
     const char* message;
 };
+
+}
 
 #endif /* INVALIDOPTIONEXCEPTION_H_ */

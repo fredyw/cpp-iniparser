@@ -24,10 +24,12 @@
 
 #include <stdexcept>
 
+namespace cppiniparser {
+
 class InvalidSectionException : public std::exception {
 public:
-    InvalidSectionException(const char* msg) throw() : message(msg) { }
-    virtual ~InvalidSectionException() throw();
+    InvalidSectionException(const char* msg) throw() : message(msg) {}
+    virtual ~InvalidSectionException() throw() {};
 
     /**
      * Returns a C-style character string describing the general cause
@@ -38,5 +40,7 @@ public:
 private:
     const char* message;
 };
+
+}
 
 #endif /* INVALIDSECTIONEXCEPTION_H_ */

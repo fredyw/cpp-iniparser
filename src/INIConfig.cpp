@@ -20,54 +20,115 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "INIConfig.h"
+#include "DuplicateSectionException.h"
+#include "DuplicateOptionException.h"
+#include "InvalidSectionException.h"
+#include "InvalidOptionException.h"
 
 namespace cppiniparser {
 
 bool INIConfig::HasSection(const std::string& sectionName) {
-    // TODO: implement this
-    return false;
+    if (config.find(sectionName) == config.end()) {
+        return false;
+    }
+    return true;
 }
 
 bool INIConfig::HasOption(const std::string& sectionName, const std::string& optionName) {
-    // TODO: implement this
-    return false;
+    if (!HasSection(sectionName)) {
+        return false;
+    }
+    std::map<std::string, std::string> options = config.at(sectionName);
+    if (options.find(optionName) == options.end()) {
+        return false;
+    }
+    return true;
 }
 
 std::string INIConfig::GetOption(const std::string& sectionName, const std::string& optionName) {
-    // TODO: implement this
-    return "";
+    ValidateOption(sectionName, optionName);
+
+    return config[sectionName][optionName];
 }
 
 std::vector<std::string> INIConfig::Sections() {
-    // TODO: implement this
-    return std::vector<std::string>();
+    std::vector<std::string> sections;
+    std::map<std::string, std::map<std::string, std::string> >::const_iterator i = config.begin();
+    for (; i != config.end(); ++i) {
+        sections.push_back(i->first);
+    }
+    return sections;
 }
 
 std::vector<std::string> INIConfig::Options(const std::string& sectionName) {
-    // TODO: implement this
-    return std::vector<std::string>();
+    ValidateSection(sectionName);
+
+    std::map<std::string, std::string> opts = config[sectionName];
+    std::vector<std::string> options;
+    std::map<std::string, std::string>::const_iterator i = opts.begin();
+    for (; i != opts.end(); ++i) {
+        options.push_back(i->first);
+    }
+    return options;
 }
 
 void INIConfig::SetOption(const std::string& sectionName, const std::string& optionName,
     const std::string& optionValue) {
-    // TODO: implement this
+    ValidateOption(sectionName, optionName);
+
+    std::map<std::string, std::string> options = config[sectionName];
+    options[optionName] = optionValue;
+
+    config[sectionName] = options;
 }
 
 void INIConfig::RemoveSection(const std::string& sectionName) {
-    // TODO: implement this
+    ValidateSection(sectionName);
+
+    config.erase(sectionName);
 }
 
 void INIConfig::RemoveOption(const std::string& sectionName, const std::string& optionName) {
-    // TODO: implement this
+    ValidateOption(sectionName, optionName);
+
+    config[sectionName].erase(optionName);
 }
 
 void INIConfig::AddSection(const std::string& sectionName) {
-    // TODO: implement this
+    if (HasSection(sectionName)) {
+        std::string msg = "Duplicate section (" + sectionName + ") found";
+        throw DuplicateSectionException(msg.c_str());
+    }
+    std::map<std::string, std::string> emptyMap;
+    config[sectionName] = emptyMap;
 }
 
 void INIConfig::AddOption(const std::string& sectionName, const std::string& optionName,
     const std::string& optionValue) {
-    // TODO: implement this
+    ValidateSection(sectionName);
+
+    std::map<std::string, std::string> options = config[sectionName];
+    if (HasOption(sectionName, optionName)) {
+        std::string msg = "Duplicate option (" + optionName + ") found";
+        throw DuplicateOptionException(msg.c_str());
+    }
+    options[optionName] = optionValue;
+
+    config[sectionName] = options;
+}
+
+void INIConfig::ValidateSection(const std::string& sectionName) {
+    if (!HasSection(sectionName)) {
+        std::string msg = "Section (" + sectionName + ") not found";
+        throw InvalidSectionException(msg.c_str());
+    }
+}
+
+void INIConfig::ValidateOption(const std::string& sectionName, const std::string& optionName) {
+    if (!HasOption(sectionName, optionName)) {
+        std::string msg = "Section (" + sectionName + "), Option (" + optionName + ") not found";
+        throw InvalidOptionException(msg.c_str());
+    }
 }
 
 }

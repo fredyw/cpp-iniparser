@@ -21,14 +21,25 @@
 
 #include <gtest/gtest.h>
 #include "INIParser.h"
+#include "INIReaderException.h"
 
 using namespace testing;
 using namespace cppiniparser;
 
 TEST(INIParserTest, TestRead) {
     // TODO: implement me
-    INIConfig config = INIParser::Read("whatever");
+    INIConfig config = INIParser::Read("../test/test1.ini");
+}
+
+
+TEST(INIParserTest, TestReadFileNotFound) {
+    EXPECT_THROW(INIParser::Read("somewhere"), INIReaderException);
 }
 
 TEST(INIParserTest, TestWrite) {
+    // TODO: implement me
+}
+
+TEST(INIParserTest, TestWriteFileNotFound) {
+    // TODO: implement me
 }

@@ -19,13 +19,33 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#include <fstream>
+#include <iostream>
 #include "INIParser.h"
+#include "INIReaderException.h"
+#include "Utilities.h"
 
 namespace cppiniparser {
 
+static const int BUFFER_SIZE = 8192;
+
 INIConfig INIParser::Read(const std::string& filename) {
-    // TODO: implement this
-    return INIConfig();
+    std::ifstream is;
+    is.open(filename.c_str());
+    if (!is.is_open()) {
+        std::string msg = "Unable to read " + filename;
+        throw INIReaderException(msg.c_str());
+    }
+
+    INIConfig config;
+    char buffer[BUFFER_SIZE];
+    while (!is.eof()) {
+        is.getline(buffer, BUFFER_SIZE);
+        // TODO: implement this
+    }
+    is.close();
+
+    return config;
 }
 
 void INIParser::Write(const INIConfig& config, const std::string& filename) {
