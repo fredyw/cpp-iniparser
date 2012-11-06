@@ -27,19 +27,22 @@ using namespace testing;
 using namespace cppiniparser;
 
 TEST(INIParserTest, TestRead) {
-    // TODO: implement me
     INIConfig config = INIParser::Read("../test/test1.ini");
+    EXPECT_EQ("foo", config.GetOption("foo", "name"));
+    EXPECT_EQ("hello", config.GetOption("foo", "msg"));
+
+    EXPECT_EQ("bar", config.GetOption("bar", "name"));
+    EXPECT_EQ("bye", config.GetOption("bar", "msg"));
 }
 
+TEST(INIParserTest, TestReadInvalidFile) {
+    EXPECT_THROW(INIParser::Read("../test/test2.ini"), INIReaderException);
+}
 
 TEST(INIParserTest, TestReadFileNotFound) {
     EXPECT_THROW(INIParser::Read("somewhere"), INIReaderException);
 }
 
 TEST(INIParserTest, TestWrite) {
-    // TODO: implement me
-}
-
-TEST(INIParserTest, TestWriteFileNotFound) {
     // TODO: implement me
 }

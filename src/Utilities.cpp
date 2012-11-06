@@ -81,6 +81,22 @@ namespace utils {
 
         return std::pair<std::string, std::string>(key, value);
     }
+
+    bool IsComment(const std::string& str) {
+        std::string trimmedStr = LeftTrim(str);
+        if (trimmedStr[0] == ';') {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsEmpty(const std::string& str) {
+        std::string trimmedStr = LeftTrim(str);
+        if (trimmedStr == "") {
+            return true;
+        }
+        return false;
+    }
 }
 
 }

@@ -64,3 +64,12 @@ TEST(Utilities, TestParseOption) {
     EXPECT_EQ("key", p.first);
     EXPECT_EQ("", p.second);
 }
+
+TEST(Utilities, TestIsComment) {
+    EXPECT_TRUE(utils::IsComment("; comment"));
+    EXPECT_TRUE(utils::IsComment("   ; comment"));
+}
+
+TEST(Utilities, TestIsEmpty) {
+    EXPECT_TRUE(utils::IsEmpty("      \r\n"));
+}

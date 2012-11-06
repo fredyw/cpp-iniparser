@@ -38,13 +38,31 @@ INIConfig INIParser::Read(const std::string& filename) {
     }
 
     INIConfig config;
+    // TODO: don't use fixed-size buffer
     char buffer[BUFFER_SIZE];
-    while (!is.eof()) {
-        is.getline(buffer, BUFFER_SIZE);
-        // TODO: implement this
+    std::string section = "";
+    try {
+        while (!is.eof()) {
+            is.getline(buffer, BUFFER_SIZE);
+            std::string str = std::string(buffer);
+            if (utils::IsSection(str)) {
+                section = utils::ParseSection(str);
+                config.AddSection(section);
+            } else if (utils::IsOption(str)) {
+                std::pair<std::string, std::string> option = utils::ParseOption(str);
+                config.AddOption(section, option.first, option.second);
+            } else if (utils::IsEmpty(str) || utils::IsComment(str)) {
+                // ignore it
+            } else {
+                std::string msg = "Invalid line: " + str;
+                throw INIReaderException(msg.c_str());
+            }
+        }
+    } catch (...) {
+        // don't forget to close the ifstream
+        is.close();
+        throw;
     }
-    is.close();
-
     return config;
 }
 

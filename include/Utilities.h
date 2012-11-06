@@ -71,6 +71,16 @@ namespace utils {
      * ParseOption assumes a given string has a correct format.
      */
     std::pair<std::string, std::string> ParseOption(const std::string& str);
+
+    /**
+     * Is a given string a comment? A comment starts with ;
+     */
+    bool IsComment(const std::string& str);
+
+    /**
+     * Is a given string empty?
+     */
+    bool IsEmpty(const std::string& str);
 }
 
 }
