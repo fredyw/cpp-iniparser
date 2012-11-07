@@ -20,73 +20,77 @@ cpp-iniparses uses GoogleTest (http://code.google.com/p/googletest/)
 
     waf build --test
 
-Alternatively, we can also explicitly tell where the gtest header files and libraries are
+Alternatively, we can also explicitly specify the gtest headers and libraries location
     
     waf build --test --gtest_include=/gtest/include --gtest_lib=/gtest/lib
+
+### Installing cppiniparser ###
+    waf configure
+    waf install
 
 Examples
 --------
 __input.ini__
 
-        [foo]
-        key1=value1
-        key2=value2
-        
-        [bar]
-        key3=value3
-        key4=value4
+    [foo]
+    key1=value1
+    key2=value2
+    
+    [bar]
+    key3=value3
+    key4=value4
 
 __output.ini__
 
-        [bar]
-        key4=value4
-        key5=value5
-
-        [foo]
-        key1=value1
-        key2=value2
-        key3=value3
+    [bar]
+    key4=value4
+    key5=value5
+    
+    [foo]
+    key1=value1
+    key2=value2
+    key3=value3
 
 __Main.cpp__
 
-        #include <iostream>
-        #include "INIParser.h"
-        using namespace std;
-        using namespace cppiniparser;
-        
-        void TestRead() {
-            INIConfig config = INIParser::Read("input.ini");
-            vector<string> sections = config.Sections();
-            vector<string>::const_iterator s = sections.begin();
-            for (; s != sections.end(); ++s) {
-                cout << "Section: " << *s << endl;
-                vector<string> opts = config.Options(*s);
-                vector<string>::const_iterator o = opts.begin();
-                for (; o != opts.end(); ++o) {
-                    string value = config.GetOption(*s, *o);
-                    cout << "   - " << *o << "=" << value << endl;
-                }
-                cout << endl;
+    #include <iostream>
+    #include "INIParser.h"
+    using namespace std;
+    using namespace cppiniparser;
+    
+    void TestRead() {
+        INIConfig config = INIParser::Read("input.ini");
+        vector<string> sections = config.Sections();
+        vector<string>::const_iterator s = sections.begin();
+        for (; s != sections.end(); ++s) {
+            cout << "Section: " << *s << endl;
+            vector<string> opts = config.Options(*s);
+            vector<string>::const_iterator o = opts.begin();
+            for (; o != opts.end(); ++o) {
+                string value = config.GetOption(*s, *o);
+                cout << "   - " << *o << "=" << value << endl;
             }
+            cout << endl;
         }
-        
-        void TestWrite() {
-            INIConfig config;
-            config.AddSection("foo");
-            config.AddOption("foo", "key1", "value1");
-            config.AddOption("foo", "key2", "value2");
-            config.AddOption("foo", "key3", "value3");
-        
-            config.AddSection("bar");
-            config.AddOption("bar", "key4", "value4");
-            config.AddOption("bar", "key5", "value5");
-        
-            INIParser::Write(config, "output.ini");
-        }
-        
-        int main() {
-            TestRead();
-            TestWrite();
-        
-            return 0;
-        }
+    }
+    
+    void TestWrite() {
+        INIConfig config;
+        config.AddSection("foo");
+        config.AddOption("foo", "key1", "value1");
+        config.AddOption("foo", "key2", "value2");
+        config.AddOption("foo", "key3", "value3");
+    
+        config.AddSection("bar");
+        config.AddOption("bar", "key4", "value4");
+        config.AddOption("bar", "key5", "value5");
+    
+        INIParser::Write(config, "output.ini");
+    }
+    
+    int main() {
+        TestRead();
+        TestWrite();
+    
+        return 0;
+    }
