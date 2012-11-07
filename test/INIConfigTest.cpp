@@ -95,6 +95,7 @@ TEST(INIConfigTest, TestSections) {
     config.AddOption("bar", "key5", "value5");
 
     std::vector<std::string> sections = config.Sections();
+    EXPECT_EQ(2, sections.size());
     EXPECT_TRUE(std::find(sections.begin(), sections.end(), "foo") != sections.end());
     EXPECT_TRUE(std::find(sections.begin(), sections.end(), "bar") != sections.end());
     EXPECT_FALSE(std::find(sections.begin(), sections.end(), "foobar") != sections.end());
@@ -111,13 +112,13 @@ TEST(INIConfigTest, TestOptions) {
     config.AddOption("bar", "key4", "value4");
 
     std::vector<std::string> opts = config.Options("foo");
-
+    EXPECT_EQ(2, opts.size());
     EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key1") != opts.end());
     EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key2") != opts.end());
     EXPECT_FALSE(std::find(opts.begin(), opts.end(), "key3") != opts.end());
 
     opts = config.Options("bar");
-
+    EXPECT_EQ(2, opts.size());
     EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key3") != opts.end());
     EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key4") != opts.end());
     EXPECT_FALSE(std::find(opts.begin(), opts.end(), "key5") != opts.end());

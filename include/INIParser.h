@@ -44,7 +44,7 @@ public:
      *
      * If there is a problem in writing an INI file, an INIWriterException will be thrown.
      */
-    static void Write(const INIConfig& iniConfig, const std::string& filename);
+    static void Write(INIConfig& iniConfig, const std::string& filename);
 
     virtual ~INIParser() {}
 };

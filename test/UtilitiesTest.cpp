@@ -70,6 +70,14 @@ TEST(Utilities, TestIsComment) {
     EXPECT_TRUE(utils::IsComment("   ; comment"));
 }
 
-TEST(Utilities, TestIsEmpty) {
-    EXPECT_TRUE(utils::IsEmpty("      \r\n"));
+TEST(Utilities, TestIsEmptyLine) {
+    EXPECT_TRUE(utils::IsEmptyLine("      \r\n"));
+}
+
+TEST(Utilities, TestCreateSection) {
+    EXPECT_EQ("[foo]", utils::CreateSection("foo"));
+}
+
+TEST(Utilities, TestCreateOption) {
+    EXPECT_EQ("foo=bar", utils::CreateOption("foo", "bar"));
 }

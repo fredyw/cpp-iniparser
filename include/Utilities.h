@@ -80,7 +80,21 @@ namespace utils {
     /**
      * Is a given string empty?
      */
-    bool IsEmpty(const std::string& str);
+    bool IsEmptyLine(const std::string& str);
+
+    /**
+     * Creates a section.
+     *
+     * [section]
+     */
+    std::string CreateSection(const std::string& section);
+
+    /**
+     * Creates an option.
+     *
+     * key=value
+     */
+    std::string CreateOption(const std::string& optionName, const std::string& optionValue);
 }
 
 }

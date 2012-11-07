@@ -90,12 +90,20 @@ namespace utils {
         return false;
     }
 
-    bool IsEmpty(const std::string& str) {
+    bool IsEmptyLine(const std::string& str) {
         std::string trimmedStr = LeftTrim(str);
         if (trimmedStr == "") {
             return true;
         }
         return false;
+    }
+
+    std::string CreateSection(const std::string& section) {
+        return "[" + section + "]";
+    }
+
+    std::string CreateOption(const std::string& optionName, const std::string& optionValue) {
+        return optionName + "=" + optionValue;
     }
 }
 

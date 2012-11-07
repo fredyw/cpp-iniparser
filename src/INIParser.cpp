@@ -23,6 +23,7 @@
 #include <iostream>
 #include "INIParser.h"
 #include "INIReaderException.h"
+#include "INIWriterException.h"
 #include "Utilities.h"
 
 namespace cppiniparser {
@@ -51,7 +52,7 @@ INIConfig INIParser::Read(const std::string& filename) {
             } else if (utils::IsOption(str)) {
                 std::pair<std::string, std::string> option = utils::ParseOption(str);
                 config.AddOption(section, option.first, option.second);
-            } else if (utils::IsEmpty(str) || utils::IsComment(str)) {
+            } else if (utils::IsEmptyLine(str) || utils::IsComment(str)) {
                 // ignore it
             } else {
                 std::string msg = "Invalid line: " + str;
@@ -66,8 +67,26 @@ INIConfig INIParser::Read(const std::string& filename) {
     return config;
 }
 
-void INIParser::Write(const INIConfig& config, const std::string& filename) {
-    // TODO: implement this
+void INIParser::Write(INIConfig& config, const std::string& filename) {
+    std::ofstream os;
+    os.open(filename.c_str());
+    if (!os.is_open()) {
+        std::string msg = "Unable to write " + filename;
+        throw INIWriterException(msg.c_str());
+    }
+    std::vector<std::string> sections = config.Sections();
+    std::vector<std::string>::const_iterator s = sections.begin();
+    for (; s != sections.end(); ++s) {
+        os << utils::CreateSection(*s) << std::endl;
+        std::vector<std::string> opts = config.Options(*s);
+        std::vector<std::string>::const_iterator o = opts.begin();
+        for (; o != opts.end(); ++o) {
+            std::string value = config.GetOption(*s, *o);
+            os << utils::CreateOption(*o, value) << std::endl;
+        }
+        os << std::endl;
+    }
+    os.close();
 }
 
 }

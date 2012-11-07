@@ -56,19 +56,21 @@ def build(ctx):
             yield (test_file, test_target)
             
     def build_unit_tests(ctx):
-        if not ctx.options.gtest_include or not ctx.options.gtest_lib:
-            ctx.fatal('--gtest_include and --gtest_lib options are required for %s command'
-                      % ctx.cmd)
-        
-        gtest_include = os.path.abspath(ctx.options.gtest_include)
-        gtest_lib = os.path.abspath(ctx.options.gtest_lib)
-        ctx.to_log('GoogleTest include : %s\n' % gtest_include)
-        ctx.to_log('GoogleTest lib     : %s\n' % gtest_lib)
+        includes = include_dir
+        libpath = test_libs_dir
+        if ctx.options.gtest_include:
+            gtest_include = os.path.abspath(ctx.options.gtest_include)
+            ctx.to_log('GoogleTest include : %s\n' % gtest_include)
+            includes += [gtest_include] 
+        if ctx.options.gtest_lib:
+            gtest_lib = os.path.abspath(ctx.options.gtest_lib)
+            ctx.to_log('GoogleTest lib     : %s\n' % gtest_lib)
+            libpath += [gtest_lib]
         
         for (test_file, test_target) in get_unit_test():
             ctx.program(source=test_file, target=test_target,
-                        includes=include_dir + [gtest_include],
-                        libpath=test_libs_dir + [gtest_lib],
+                        includes=includes,
+                        libpath=libpath,
                         lib=test_libs + [target_file])
             
     def exec_unit_tests(ctx):
@@ -90,7 +92,10 @@ def build(ctx):
         build_shared(ctx)
     elif ctx.options.static:
         build_static(ctx)
-        
+    else:
+        ctx.options.shared = True
+        build_shared(ctx)
+
     if ctx.options.test:
         build_unit_tests(ctx)
         exec_unit_tests(ctx)

@@ -20,6 +20,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <gtest/gtest.h>
+#include <cstdio>
+#include <algorithm>
 #include "INIParser.h"
 #include "INIReaderException.h"
 
@@ -44,5 +46,31 @@ TEST(INIParserTest, TestReadFileNotFound) {
 }
 
 TEST(INIParserTest, TestWrite) {
-    // TODO: implement me
+    INIConfig inConfig;
+    inConfig.AddSection("foo");
+    inConfig.AddOption("foo", "key1", "value1");
+    inConfig.AddOption("foo", "key2", "value2");
+    inConfig.AddOption("foo", "key3", "value3");
+
+    inConfig.AddSection("bar");
+    inConfig.AddOption("bar", "key4", "value4");
+    inConfig.AddOption("bar", "key5", "value5");
+
+    INIParser::Write(inConfig, "../test/out.ini");
+
+    INIConfig outConfig = INIParser::Read("../test/out.ini");
+
+    std::vector<std::string> opts = outConfig.Options("foo");
+    EXPECT_EQ(3, opts.size());
+    EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key1") != opts.end());
+    EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key2") != opts.end());
+    EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key3") != opts.end());
+
+    opts = outConfig.Options("bar");
+    EXPECT_EQ(2, opts.size());
+    EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key4") != opts.end());
+    EXPECT_TRUE(std::find(opts.begin(), opts.end(), "key5") != opts.end());
+
+    // delete the file at the end
+    std::remove("../test/out.ini");
 }
