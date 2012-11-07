@@ -26,7 +26,8 @@ Alternatively, we can also explicitly tell where the gtest header files and libr
 
 Examples
 --------
-input.ini
+__input.ini__
+
         [foo]
         key1=value1
         key2=value2
@@ -35,7 +36,8 @@ input.ini
         key3=value3
         key4=value4
 
-output.ini
+__output.ini__
+
         [bar]
         key4=value4
         key5=value5
@@ -45,39 +47,40 @@ output.ini
         key2=value2
         key3=value3
 
-        #include &lt;iostream&gt;
-        #include &#34;INIParser.h&#34;
+
+        #include <iostream>
+        #include "INIParser.h"
         using namespace std;
         using namespace cppiniparser;
         
         void TestRead() {
-            INIConfig config = INIParser::Read(&#34;input.ini&#34;);
-            vector&lt;string&gt; sections = config.Sections();
-            vector&lt;string&gt;::const_iterator s = sections.begin();
+            INIConfig config = INIParser::Read("input.ini");
+            vector<string> sections = config.Sections();
+            vector<string>::const_iterator s = sections.begin();
             for (; s != sections.end(); ++s) {
-                cout &lt;&lt; &#34;Section: &#34; &lt;&lt; *s &lt;&lt; endl;
-                vector&lt;string&gt; opts = config.Options(*s);
-                vector&lt;string&gt;::const_iterator o = opts.begin();
+                cout << "Section: " << *s << endl;
+                vector<string> opts = config.Options(*s);
+                vector<string>::const_iterator o = opts.begin();
                 for (; o != opts.end(); ++o) {
                     string value = config.GetOption(*s, *o);
-                    cout &lt;&lt; &#34;   - &#34; &lt;&lt; *o &lt;&lt; &#34;=&#34; &lt;&lt; value &lt;&lt; endl;
+                    cout << "   - " << *o << "=" << value << endl;
                 }
-                cout &lt;&lt; endl;
+                cout << endl;
             }
         }
         
         void TestWrite() {
             INIConfig config;
-            config.AddSection(&#34;foo&#34;);
-            config.AddOption(&#34;foo&#34;, &#34;key1&#34;, &#34;value1&#34;);
-            config.AddOption(&#34;foo&#34;, &#34;key2&#34;, &#34;value2&#34;);
-            config.AddOption(&#34;foo&#34;, &#34;key3&#34;, &#34;value3&#34;);
+            config.AddSection("foo");
+            config.AddOption("foo", "key1", "value1");
+            config.AddOption("foo", "key2", "value2");
+            config.AddOption("foo", "key3", "value3");
         
-            config.AddSection(&#34;bar&#34;);
-            config.AddOption(&#34;bar&#34;, &#34;key4&#34;, &#34;value4&#34;);
-            config.AddOption(&#34;bar&#34;, &#34;key5&#34;, &#34;value5&#34;);
+            config.AddSection("bar");
+            config.AddOption("bar", "key4", "value4");
+            config.AddOption("bar", "key5", "value5");
         
-            INIParser::Write(config, &#34;output.ini&#34;);
+            INIParser::Write(config, "output.ini");
         }
         
         int main() {
