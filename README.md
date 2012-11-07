@@ -7,12 +7,13 @@ How to build
 ------------
 cpp-iniparser uses Waf build system (http://code.google.com/p/waf/)
 
-### Building a static library ###
+### Preparing the build ###
     waf configure
+
+### Building a static library ###
     waf build --static
 
 ### Building a shared library ###
-    waf configure
     waf build --shared
 
 ### Running unit tests ###
@@ -21,11 +22,10 @@ cpp-iniparses uses GoogleTest (http://code.google.com/p/googletest/)
     waf build --test
 
 Alternatively, we can also explicitly specify the gtest headers and libraries location
-    
+
     waf build --test --gtest_include=/gtest/include --gtest_lib=/gtest/lib
 
 ### Installing cppiniparser ###
-    waf configure
     waf install
 
 Examples
