@@ -74,19 +74,26 @@ void INIParser::Write(INIConfig& config, const std::string& filename) {
         std::string msg = "Unable to write " + filename;
         throw INIWriterException(msg.c_str());
     }
-    std::vector<std::string> sections = config.Sections();
-    std::vector<std::string>::const_iterator s = sections.begin();
-    for (; s != sections.end(); ++s) {
-        os << utils::CreateSection(*s) << std::endl;
-        std::vector<std::string> opts = config.Options(*s);
-        std::vector<std::string>::const_iterator o = opts.begin();
-        for (; o != opts.end(); ++o) {
-            std::string value = config.GetOption(*s, *o);
-            os << utils::CreateOption(*o, value) << std::endl;
+
+    try {
+        std::vector<std::string> sections = config.Sections();
+        std::vector<std::string>::const_iterator s = sections.begin();
+        for (; s != sections.end(); ++s) {
+            os << utils::CreateSection(*s) << std::endl;
+            std::vector<std::string> opts = config.Options(*s);
+            std::vector<std::string>::const_iterator o = opts.begin();
+            for (; o != opts.end(); ++o) {
+                std::string value = config.GetOption(*s, *o);
+                os << utils::CreateOption(*o, value) << std::endl;
+            }
+            os << std::endl;
         }
-        os << std::endl;
     }
-    os.close();
+    catch (...) {
+        // don't forget to close the ofstream
+        os.close();
+        throw;
+    }
 }
 
 }
