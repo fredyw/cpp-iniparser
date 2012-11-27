@@ -28,8 +28,6 @@
 
 namespace cppiniparser {
 
-static const int BUFFER_SIZE = 8192;
-
 INIConfig INIParser::Read(const std::string& filename) {
     std::ifstream is;
     is.open(filename.c_str());
@@ -39,23 +37,20 @@ INIConfig INIParser::Read(const std::string& filename) {
     }
 
     INIConfig config;
-    // TODO: don't use fixed-size buffer
-    char buffer[BUFFER_SIZE];
     std::string section = "";
     try {
-        while (!is.eof()) {
-            is.getline(buffer, BUFFER_SIZE);
-            std::string str = std::string(buffer);
-            if (utils::IsSection(str)) {
-                section = utils::ParseSection(str);
+        std::string line;
+        while (getline(is, line)) {
+            if (utils::IsSection(line)) {
+                section = utils::ParseSection(line);
                 config.AddSection(section);
-            } else if (utils::IsOption(str)) {
-                std::pair<std::string, std::string> option = utils::ParseOption(str);
+            } else if (utils::IsOption(line)) {
+                std::pair<std::string, std::string> option = utils::ParseOption(line);
                 config.AddOption(section, option.first, option.second);
-            } else if (utils::IsEmptyLine(str) || utils::IsComment(str)) {
+            } else if (utils::IsEmptyLine(line) || utils::IsComment(line)) {
                 // ignore it
             } else {
-                std::string msg = "Invalid line: " + str;
+                std::string msg = "Invalid line: " + line;
                 throw INIReaderException(msg.c_str());
             }
         }
