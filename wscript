@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, shutil, subprocess
+import os, shutil, subprocess, platform
 from waflib.Task import Task
 from waflib import Context
 
@@ -64,7 +64,7 @@ def build(ctx):
             includes += [gtest_include] 
         if ctx.options.gtest_lib:
             gtest_lib = os.path.abspath(ctx.options.gtest_lib)
-            ctx.to_log('GoogleTest lib     : %s\n' % gtest_lib)
+            ctx.to_log('GoogleTest library : %s\n' % gtest_lib)
             libpath += [gtest_lib]
         
         for (test_file, test_target) in get_unit_test():
@@ -76,7 +76,7 @@ def build(ctx):
     def exec_unit_tests(ctx):
         if ctx.options.shared:
             lib_dir = os.path.join(os.getcwd(), out)
-            if os.name.startswith('win'):
+            if platform.system().lower().startswith('win'):
                 os.environ['PATH'] = (lib_dir + os.pathsep + os.environ['PATH']
                                       if os.environ.has_key('PATH')
                                       else lib_dir) 
@@ -86,6 +86,8 @@ def build(ctx):
                                                  else lib_dir)
                 
         for (test_file, test_target) in get_unit_test():
+            if platform.system().lower().startswith('win'):
+                test_target += '.exe'
             ctx(rule=test_target, source=test_target)
     
     if ctx.options.shared:
