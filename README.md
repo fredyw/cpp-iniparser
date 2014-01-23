@@ -57,45 +57,46 @@ __output.ini__
     key3=value3
 
 __Main.cpp__
+```c++
+#include <iostream>
+#include "INIParser.h"
+using namespace std;
+using namespace cppiniparser;
 
-    #include <iostream>
-    #include "INIParser.h"
-    using namespace std;
-    using namespace cppiniparser;
-    
-    void TestRead() {
-        INIConfig config = INIParser::Read("input.ini");
-        vector<string> sections = config.Sections();
-        vector<string>::const_iterator s = sections.begin();
-        for (; s != sections.end(); ++s) {
-            cout << "Section: " << *s << endl;
-            vector<string> opts = config.Options(*s);
-            vector<string>::const_iterator o = opts.begin();
-            for (; o != opts.end(); ++o) {
-                string value = config.GetOption(*s, *o);
-                cout << "   - " << *o << "=" << value << endl;
-            }
-            cout << endl;
+void TestRead() {
+    INIConfig config = INIParser::Read("input.ini");
+    vector<string> sections = config.Sections();
+    vector<string>::const_iterator s = sections.begin();
+    for (; s != sections.end(); ++s) {
+        cout << "Section: " << *s << endl;
+        vector<string> opts = config.Options(*s);
+        vector<string>::const_iterator o = opts.begin();
+        for (; o != opts.end(); ++o) {
+            string value = config.GetOption(*s, *o);
+            cout << "   - " << *o << "=" << value << endl;
         }
+        cout << endl;
     }
-    
-    void TestWrite() {
-        INIConfig config;
-        config.AddSection("foo");
-        config.AddOption("foo", "key1", "value1");
-        config.AddOption("foo", "key2", "value2");
-        config.AddOption("foo", "key3", "value3");
-    
-        config.AddSection("bar");
-        config.AddOption("bar", "key4", "value4");
-        config.AddOption("bar", "key5", "value5");
-    
-        INIParser::Write(config, "output.ini");
-    }
-    
-    int main() {
-        TestRead();
-        TestWrite();
-    
-        return 0;
-    }
+}
+
+void TestWrite() {
+    INIConfig config;
+    config.AddSection("foo");
+    config.AddOption("foo", "key1", "value1");
+    config.AddOption("foo", "key2", "value2");
+    config.AddOption("foo", "key3", "value3");
+
+    config.AddSection("bar");
+    config.AddOption("bar", "key4", "value4");
+    config.AddOption("bar", "key5", "value5");
+
+    INIParser::Write(config, "output.ini");
+}
+
+int main() {
+    TestRead();
+    TestWrite();
+
+    return 0;
+}
+```
