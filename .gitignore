@@ -8,3 +8,4 @@ Release
 .pydevproject
 .lock*
 *.swp
+.waf*

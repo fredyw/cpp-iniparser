@@ -36,31 +36,31 @@ public:
     /**
      * Checks if a section exists.
      */
-    bool HasSection(const std::string& sectionName);
+    bool HasSection(const std::string& sectionName) const;
 
     /**
      * Checks if an option exists.
      */
-    bool HasOption(const std::string& sectionName, const std::string& optionName);
+    bool HasOption(const std::string& sectionName, const std::string& optionName) const;
 
     /**
      * Gets an option.
      *
      * If the section name/option name does not exist, an InvalidOptionException will be thrown.
      */
-    std::string GetOption(const std::string& sectionName, const std::string& optionName);
+    std::string GetOption(const std::string& sectionName, const std::string& optionName) const;
 
     /**
      * Gets all the sections.
      */
-    std::vector<std::string> Sections();
+    std::vector<std::string> Sections() const;
 
     /**
      * Gets list of options from a given section name.
      *
      * If the section name does not exist, an InvalidSectionException will be thrown.
      */
-    std::vector<std::string> Options(const std::string& sectionName);
+    std::vector<std::string> Options(const std::string& sectionName) const;
 
     /**
      * Sets an option.
@@ -110,12 +110,12 @@ private:
     /**
      * This method throws InvalidSectionName if section name doesn't exist.
      */
-    inline void ValidateSection(const std::string& sectionName);
+    inline void ValidateSection(const std::string& sectionName) const;
 
     /**
      * This method throws InvalidOptionName if section name/option name doesn't exist.
      */
-    inline void ValidateOption(const std::string& sectionName, const std::string& optionName);
+    inline void ValidateOption(const std::string& sectionName, const std::string& optionName) const;
 };
 
 }

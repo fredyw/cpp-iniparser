@@ -27,14 +27,14 @@
 
 namespace cppiniparser {
 
-bool INIConfig::HasSection(const std::string& sectionName) {
+bool INIConfig::HasSection(const std::string& sectionName) const {
     if (config.find(sectionName) == config.end()) {
         return false;
     }
     return true;
 }
 
-bool INIConfig::HasOption(const std::string& sectionName, const std::string& optionName) {
+bool INIConfig::HasOption(const std::string& sectionName, const std::string& optionName) const {
     if (!HasSection(sectionName)) {
         return false;
     }
@@ -45,13 +45,13 @@ bool INIConfig::HasOption(const std::string& sectionName, const std::string& opt
     return true;
 }
 
-std::string INIConfig::GetOption(const std::string& sectionName, const std::string& optionName) {
+std::string INIConfig::GetOption(const std::string& sectionName, const std::string& optionName) const {
     ValidateOption(sectionName, optionName);
 
-    return config[sectionName][optionName];
+    return config.at(sectionName).at(optionName);
 }
 
-std::vector<std::string> INIConfig::Sections() {
+std::vector<std::string> INIConfig::Sections() const {
     std::vector<std::string> sections;
     std::map<std::string, std::map<std::string, std::string> >::const_iterator i = config.begin();
     for (; i != config.end(); ++i) {
@@ -60,10 +60,10 @@ std::vector<std::string> INIConfig::Sections() {
     return sections;
 }
 
-std::vector<std::string> INIConfig::Options(const std::string& sectionName) {
+std::vector<std::string> INIConfig::Options(const std::string& sectionName) const {
     ValidateSection(sectionName);
 
-    std::map<std::string, std::string> opts = config[sectionName];
+    std::map<std::string, std::string> opts = config.at(sectionName);
     std::vector<std::string> options;
     std::map<std::string, std::string>::const_iterator i = opts.begin();
     for (; i != opts.end(); ++i) {
@@ -76,10 +76,8 @@ void INIConfig::SetOption(const std::string& sectionName, const std::string& opt
     const std::string& optionValue) {
     ValidateOption(sectionName, optionName);
 
-    std::map<std::string, std::string> options = config[sectionName];
+    std::map<std::string, std::string>& options = config[sectionName];
     options[optionName] = optionValue;
-
-    config[sectionName] = options;
 }
 
 void INIConfig::RemoveSection(const std::string& sectionName) {
@@ -107,24 +105,22 @@ void INIConfig::AddOption(const std::string& sectionName, const std::string& opt
     const std::string& optionValue) {
     ValidateSection(sectionName);
 
-    std::map<std::string, std::string> options = config[sectionName];
+    std::map<std::string, std::string>& options = config[sectionName];
     if (HasOption(sectionName, optionName)) {
         std::string msg = "Duplicate option (" + optionName + ") found";
         throw DuplicateOptionException(msg.c_str());
     }
     options[optionName] = optionValue;
-
-    config[sectionName] = options;
 }
 
-void INIConfig::ValidateSection(const std::string& sectionName) {
+void INIConfig::ValidateSection(const std::string& sectionName) const {
     if (!HasSection(sectionName)) {
         std::string msg = "Section (" + sectionName + ") not found";
         throw InvalidSectionException(msg.c_str());
     }
 }
 
-void INIConfig::ValidateOption(const std::string& sectionName, const std::string& optionName) {
+void INIConfig::ValidateOption(const std::string& sectionName, const std::string& optionName) const {
     if (!HasOption(sectionName, optionName)) {
         std::string msg = "Section (" + sectionName + "), Option (" + optionName + ") not found";
         throw InvalidOptionException(msg.c_str());

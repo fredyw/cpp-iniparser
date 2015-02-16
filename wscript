@@ -5,7 +5,7 @@ from waflib.Task import Task
 from waflib import Context
 
 APPNAME = 'cppiniparser'
-VERSION = '0.1'
+VERSION = '1.1.0'
 
 top = '.'
 out = 'build'
@@ -21,7 +21,7 @@ include_dir = ['include']
 test_files = ['test/INIConfigTest.cpp',
               'test/INIParserTest.cpp',
               'test/UtilitiesTest.cpp']
-test_libs = ['pthread', 'gtest_main']
+test_libs = ['gtest_main', 'pthread']
 test_libs_dir = [os.path.join(os.getcwd(), out)]
 test_output = 'test_output'
 
