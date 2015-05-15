@@ -41,14 +41,14 @@ INIConfig INIParser::Read(const std::string& filename) {
     try {
         std::string line;
         while (getline(is, line)) {
-            if (utils::IsSection(line)) {
+            if (utils::IsEmptyLine(line) || utils::IsComment(line)) {
+                // ignore it
+            } else if (utils::IsSection(line)) {
                 section = utils::ParseSection(line);
                 config.AddSection(section);
             } else if (utils::IsOption(line)) {
                 std::pair<std::string, std::string> option = utils::ParseOption(line);
                 config.AddOption(section, option.first, option.second);
-            } else if (utils::IsEmptyLine(line) || utils::IsComment(line)) {
-                // ignore it
             } else {
                 std::string msg = "Invalid line: " + line;
                 throw INIReaderException(msg.c_str());

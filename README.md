@@ -22,13 +22,7 @@ On Windows, you need to install MinGW.
     waf build --shared
 
 ### Running unit tests ###
-cpp-iniparses uses GoogleTest (http://code.google.com/p/googletest/)
-
-    waf build --test
-
-Alternatively, we can also explicitly specify the gtest headers and libraries location
-
-    waf build --test --gtest_include=/gtest/include --gtest_lib=/gtest/lib
+    ./run_tests.sh
 
 ### Installing cppiniparser ###
     waf install
