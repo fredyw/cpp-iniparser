@@ -54,6 +54,7 @@ INIConfig INIParser::Read(const std::string& filename) {
                 throw INIReaderException(msg.c_str());
             }
         }
+        is.close();
     } catch (...) {
         // don't forget to close the ifstream
         is.close();
@@ -71,20 +72,20 @@ void INIParser::Write(INIConfig& config, const std::string& filename) {
     }
 
     try {
-        std::vector<std::string> sections = config.Sections();
+        const std::vector<std::string>& sections = config.Sections();
         std::vector<std::string>::const_iterator s = sections.begin();
         for (; s != sections.end(); ++s) {
             os << utils::CreateSection(*s) << std::endl;
-            std::vector<std::string> opts = config.Options(*s);
-            std::vector<std::string>::const_iterator o = opts.begin();
-            for (; o != opts.end(); ++o) {
+            const std::vector<std::string>& opts = config.Options(*s);
+            for (std::vector<std::string>::const_iterator o = opts.begin();
+                o != opts.end(); ++o) {
                 std::string value = config.GetOption(*s, *o);
                 os << utils::CreateOption(*o, value) << std::endl;
             }
             os << std::endl;
         }
-    }
-    catch (...) {
+        os.close();
+    } catch (...) {
         // don't forget to close the ofstream
         os.close();
         throw;

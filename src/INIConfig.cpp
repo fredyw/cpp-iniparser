@@ -38,7 +38,7 @@ bool INIConfig::HasOption(const std::string& sectionName, const std::string& opt
     if (!HasSection(sectionName)) {
         return false;
     }
-    std::map<std::string, std::string> options = config.at(sectionName);
+    const std::map<std::string, std::string>& options = config.at(sectionName);
     if (options.find(optionName) == options.end()) {
         return false;
     }
@@ -48,7 +48,8 @@ bool INIConfig::HasOption(const std::string& sectionName, const std::string& opt
 std::string INIConfig::GetOption(const std::string& sectionName, const std::string& optionName) const {
     ValidateOption(sectionName, optionName);
 
-    return config.at(sectionName).at(optionName);
+    const std::map<std::string, std::string>& options = config.at(sectionName);
+    return options.at(optionName);
 }
 
 std::vector<std::string> INIConfig::Sections() const {
@@ -63,7 +64,7 @@ std::vector<std::string> INIConfig::Sections() const {
 std::vector<std::string> INIConfig::Options(const std::string& sectionName) const {
     ValidateSection(sectionName);
 
-    std::map<std::string, std::string> opts = config.at(sectionName);
+    const std::map<std::string, std::string>& opts = config.at(sectionName);
     std::vector<std::string> options;
     std::map<std::string, std::string>::const_iterator i = opts.begin();
     for (; i != opts.end(); ++i) {
