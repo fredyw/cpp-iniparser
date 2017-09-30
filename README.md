@@ -5,8 +5,7 @@ A small C++ INI parser library
 
 How to build
 ------------
-cpp-iniparser uses Waf build system (http://code.google.com/p/waf/).
-On Windows, you need to install MinGW.
+cpp-iniparser uses [Waf](https://github.com/waf-project/waf) build system. On Windows, you need to install MinGW.
 
 ### Preparing the build ###
     On Linux:
