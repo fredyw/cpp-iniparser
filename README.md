@@ -1,54 +1,50 @@
-cpp-iniparser
-=============
-
+# cpp-iniparser
 A small C++ INI parser library
 
-How to build
-------------
+## How to build
 cpp-iniparser uses [Waf](https://github.com/waf-project/waf) build system. On Windows, you need to install MinGW.
 
-### Preparing the build ###
+### Preparing the build
     On Linux:
     waf configure
 
     On Windows:
     waf configure --check-cxx-compiler=g++
 
-### Building a static library ###
+### Building a static library
     waf build --static
 
-### Building a shared library ###
+### Building a shared library
     waf build --shared
 
-### Running unit tests ###
+### Running unit tests
     ./run_tests.sh
 
-### Installing cppiniparser ###
+### Installing cppiniparser
     waf install
 
-Examples
---------
+## Examples
 __input.ini__
+```
+[foo]
+key1=value1
+key2=value2
 
-    [foo]
-    key1=value1
-    key2=value2
-    
-    [bar]
-    key3=value3
-    key4=value4
-
+[bar]
+key3=value3
+key4=value4
+```
 __output.ini__
+```
+[bar]
+key4=value4
+key5=value5
 
-    [bar]
-    key4=value4
-    key5=value5
-    
-    [foo]
-    key1=value1
-    key2=value2
-    key3=value3
-
+[foo]
+key1=value1
+key2=value2
+key3=value3
+```
 __Main.cpp__
 ```c++
 #include <iostream>
